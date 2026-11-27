@@ -146,12 +146,12 @@
     },
     {
       "id": "pin",
-      "version": "b14c089fa6f82ddc",
-      "sha256": "b14c089fa6f82ddcf86c8f827f28cd13930bbe67cefb36c17916d72b46dfc61b",
-      "file": "b14c089fa6f82ddcf86c8f827f28cd13930bbe67cefb36c17916d72b46dfc61b.zip",
-      "bytes": 70129,
-      "rawBytes": 195371,
-      "sourceLines": 11214,
+      "version": "1e0b36950a39c4c5",
+      "sha256": "1e0b36950a39c4c505027211a6dc1ed24af7e93c9cbde6d5f25262e9b0afdbed",
+      "file": "1e0b36950a39c4c505027211a6dc1ed24af7e93c9cbde6d5f25262e9b0afdbed.zip",
+      "bytes": 62107,
+      "rawBytes": 151662,
+      "sourceLines": 11504,
       "license": "MIT — Phong Phan",
       "source": "https://raw.githubusercontent.com/ph0ngp/hanviet-pinyin-wordlist/main/hanviet.csv"
     }
