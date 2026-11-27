@@ -2,6 +2,10 @@
 
 qt-extra-vp.txt
 
+qt-public-pron.txt
+
+qt-public-name.txt
+
 qt-genre-tienhiep.txt
 
 qt-genre-hiendai.txt
@@ -17,6 +21,14 @@ qt-genre-mathe.txt
 qt-genre-lichsu.txt
 
 qt-genre-linhdi.txt
+
+qt-genre-caovo.txt
+
+qt-genre-quansu.txt
+
+qt-genre-dongnhan.txt
+
+qt-genre-vohanlu.txt
 
 cv: CC BY-SA 4.0 — Phong Phan / CC-CEDICT
 https://raw.githubusercontent.com/ph0ngp/CVDICT/main/CVDICT.u8

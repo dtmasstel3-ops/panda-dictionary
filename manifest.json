@@ -3,23 +3,45 @@
   "packs": [
     {
       "id": "extra",
-      "version": "68ab1bf883c6fa42",
-      "sha256": "68ab1bf883c6fa420bfa3ea1f4aa7e3829af494636b590ed3df538221714d7af",
-      "file": "68ab1bf883c6fa420bfa3ea1f4aa7e3829af494636b590ed3df538221714d7af.zip",
-      "bytes": 1758,
-      "rawBytes": 3471,
-      "sourceLines": 178,
+      "version": "3fc03eb3f96cf17c",
+      "sha256": "3fc03eb3f96cf17c925d7f4dacff03017435ccf4f993ef7290cced3e1266af9d",
+      "file": "3fc03eb3f96cf17c925d7f4dacff03017435ccf4f993ef7290cced3e1266af9d.zip",
+      "bytes": 4810,
+      "rawBytes": 9799,
+      "sourceLines": 351,
       "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
       "source": "qt-extra-vp.txt"
     },
     {
+      "id": "pron",
+      "version": "26b1432d031ee599",
+      "sha256": "26b1432d031ee5995b9fc9e3f8c223b9439472a8a2268bc67de5d2f76b3700cf",
+      "file": "26b1432d031ee5995b9fc9e3f8c223b9439472a8a2268bc67de5d2f76b3700cf.zip",
+      "bytes": 457,
+      "rawBytes": 541,
+      "sourceLines": 25,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-public-pron.txt"
+    },
+    {
+      "id": "name",
+      "version": "0c8ed47bb6141dc3",
+      "sha256": "0c8ed47bb6141dc30c51c9683ef1b20666fb44e46be71b88a5d0d3e62ed18ec6",
+      "file": "0c8ed47bb6141dc30c51c9683ef1b20666fb44e46be71b88a5d0d3e62ed18ec6.zip",
+      "bytes": 422,
+      "rawBytes": 333,
+      "sourceLines": 21,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-public-name.txt"
+    },
+    {
       "id": "genre-tienhiep",
-      "version": "8f3689001f59081b",
-      "sha256": "8f3689001f59081b33de9ef8be59d268c5888960aec582173f6ee9fed33d0f4f",
-      "file": "8f3689001f59081b33de9ef8be59d268c5888960aec582173f6ee9fed33d0f4f.zip",
-      "bytes": 540,
-      "rawBytes": 738,
-      "sourceLines": 41,
+      "version": "0bf0ccb0c38d1a41",
+      "sha256": "0bf0ccb0c38d1a41439d2e9c9378d18bc3a939d63dbd4f6f1b07e6f790f0650c",
+      "file": "0bf0ccb0c38d1a41439d2e9c9378d18bc3a939d63dbd4f6f1b07e6f790f0650c.zip",
+      "bytes": 2773,
+      "rawBytes": 5502,
+      "sourceLines": 207,
       "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
       "source": "qt-genre-tienhiep.txt"
     },
@@ -99,6 +121,50 @@
       "sourceLines": 16,
       "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
       "source": "qt-genre-linhdi.txt"
+    },
+    {
+      "id": "genre-caovo",
+      "version": "56d0c0e143484358",
+      "sha256": "56d0c0e143484358e989b44df42f127ad9503de1b975904f4bfad6fafc39d1c0",
+      "file": "56d0c0e143484358e989b44df42f127ad9503de1b975904f4bfad6fafc39d1c0.zip",
+      "bytes": 430,
+      "rawBytes": 473,
+      "sourceLines": 20,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-caovo.txt"
+    },
+    {
+      "id": "genre-quansu",
+      "version": "94724ac0ac702375",
+      "sha256": "94724ac0ac7023758fc1cddca4951c7f230bb611e1168e5905402f5913bedd91",
+      "file": "94724ac0ac7023758fc1cddca4951c7f230bb611e1168e5905402f5913bedd91.zip",
+      "bytes": 434,
+      "rawBytes": 405,
+      "sourceLines": 20,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-quansu.txt"
+    },
+    {
+      "id": "genre-dongnhan",
+      "version": "54bf74b05dd0b135",
+      "sha256": "54bf74b05dd0b135dfc11d29f184379bb3a0f339823e3a30fe7121371c072463",
+      "file": "54bf74b05dd0b135dfc11d29f184379bb3a0f339823e3a30fe7121371c072463.zip",
+      "bytes": 491,
+      "rawBytes": 593,
+      "sourceLines": 20,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-dongnhan.txt"
+    },
+    {
+      "id": "genre-vohanlu",
+      "version": "ff8f76c215e0ef02",
+      "sha256": "ff8f76c215e0ef020acc9dc69d2f67e0d94ffd9fb493fdf7f4ee83f0d0502462",
+      "file": "ff8f76c215e0ef020acc9dc69d2f67e0d94ffd9fb493fdf7f4ee83f0d0502462.zip",
+      "bytes": 482,
+      "rawBytes": 593,
+      "sourceLines": 20,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-vohanlu.txt"
     },
     {
       "id": "cv",
