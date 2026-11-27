@@ -20,7 +20,7 @@ jobs:
           test "$GITHUB_REPOSITORY" = 'dtmasstel3-ops/panda-dictionary'
           python3 - 'public' <<'PYCODE'
           from pathlib import Path
-          import json, zipfile, hashlib, io, sys, urllib.request, datetime, os
+          import json, zipfile, hashlib, io, sys, urllib.request, datetime, os, csv, unicodedata
           LIMIT=64*1024*1024
           PUBLIC={
            'cv':('https://raw.githubusercontent.com/ph0ngp/CVDICT/main/CVDICT.u8','CC BY-SA 4.0 — Phong Phan / CC-CEDICT','https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt'),
@@ -45,6 +45,31 @@ jobs:
               with z.open(x) as f: b=f.read(limit+1)
               if len(b)>limit or len(b)!=x.file_size:raise ValueError('Invalid ZIP size')
               return b
+          def normalize_pinyin(raw):
+              # Upstream stores hanviet as a serialized list, not a scalar.
+              rows=csv.DictReader(io.StringIO(raw.decode('utf-8-sig',errors='strict'),newline=''))
+              if rows.fieldnames!=['char','hanviet','pinyin']:raise ValueError('Unexpected Pinyin CSV header')
+              output=[];seen=set();chars=set();rejected=0
+              for row in rows:
+                  k=unicodedata.normalize('NFC',row.get('char') or '').strip()
+                  cell=row.get('hanviet') or ''; py=(row.get('pinyin') or '').strip()
+                  if len(k)!=1 or not ('CJK' in unicodedata.name(k,'') or k=='〇') or not py or ',' in py or len(cell)>4096:
+                      rejected+=1;continue
+                  try:
+                      # Upstream uses Python-style lists with single quotes.
+                      vals=json.loads(cell.replace("'",'"')) if cell.startswith('[') else [cell]
+                  except (ValueError,TypeError,RecursionError):
+                      rejected+=1;continue
+                  if not isinstance(vals,list):rejected+=1;continue
+                  for v in vals:
+                      if not isinstance(v,str):continue
+                      v=unicodedata.normalize('NFC',v).strip()
+                      if not v or not all(c in '- ' or unicodedata.category(c)[0] in 'LM' for c in v):continue
+                      triple=(k,v,py)
+                      if triple not in seen:seen.add(triple);output.append(','.join(triple));chars.add(k)
+              if len(chars)<1000:raise ValueError(f'Pinyin only {len(chars)} valid characters')
+              print(f'Pinyin: {len(chars)} unique characters, {len(output)} readings, {rejected} skipped rows')
+              return ('\n'.join(output)+'\n').encode('utf-8')
           def make_pack(root,ident,raw,license,source):
               txt=raw.decode('utf-8-sig',errors='strict')
               if '\x00' in txt or '\ufffd' in txt or not txt.strip():raise ValueError('Invalid text '+ident)
@@ -79,6 +104,7 @@ jobs:
                       data=download(url)
                       if ident=='uni':
                           with zipfile.ZipFile(io.BytesIO(data)) as z:data=read_entry(z,'Unihan_Readings.txt')
+                      if ident=='pin':data=normalize_pinyin(data)
                       license_data=download(licurl,512*1024)
                       (root/'licenses'/f'{ident}.txt').write_bytes(license_data)
                       manifest.append(make_pack(root,ident,data,lic,url));notices.append(f'{ident}: {lic}\n{url}\n{licurl}')
