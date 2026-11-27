@@ -1,10 +1,26 @@
 # Panda Dictionary — public
 
+Tiên Thiên Thư Viện — gói thuật ngữ biên soạn bổ sung, phát hành để người dùng tải công khai.
+Không chứa Name (1).txt hoặc VietPhrase (1).txt. Không chứa Token.
+Các nguồn CVDICT, Unihan, OpenCC, PanLex và Hán Việt Pinyin được workflow tải riêng, giữ giấy phép và ghi công tương ứng.
+Các nghĩa là gợi ý từ điển, không thay thế dịch theo ngữ cảnh.
+
+
 qt-extra-vp.txt
 
 qt-public-pron.txt
 
 qt-public-name.txt
+
+qt-public-vp.txt
+
+qt-public-name2.txt
+
+qt-public-han.txt
+
+qt-public-numeric.txt
+
+qt-public-rules.txt
 
 qt-genre-tienhiep.txt
 
