@@ -1,0 +1,138 @@
+name: Build Panda Dictionary public
+"on":
+  workflow_dispatch:
+    inputs:
+      include_ignore:
+        description: "Publish Ignore pack (requires APK 1.3.9.7 or later; leave false for older apps)"
+        type: boolean
+        default: false
+        required: false
+permissions:
+  contents: write
+concurrency:
+  group: panda-dictionary-publish
+  cancel-in-progress: false
+jobs:
+  packs:
+    if: ${{ github.event.repository.private == false }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate dictionary packs
+        shell: bash
+        env:
+          PANDA_INCLUDE_IGNORE: ${{ inputs.include_ignore }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test "$GITHUB_REPOSITORY" = 'dtmasstel3-ops/panda-dictionary'
+          python3 - 'public' <<'PYCODE'
+          from pathlib import Path
+          import json, zipfile, hashlib, io, sys, urllib.request, datetime, os, csv, unicodedata
+          LIMIT=64*1024*1024
+          PUBLIC={
+           'cv':('https://raw.githubusercontent.com/ph0ngp/CVDICT/main/CVDICT.u8','CC BY-SA 4.0 — Phong Phan / CC-CEDICT','https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt'),
+           'uni':('https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip','Unicode License — Unicode Consortium 17.0','https://www.unicode.org/license.txt'),
+           'cc':('https://raw.githubusercontent.com/BYVoid/OpenCC/master/data/dictionary/TSCharacters.txt','Apache-2.0 — BYVoid/OpenCC contributors','https://raw.githubusercontent.com/BYVoid/OpenCC/master/LICENSE'),
+           'pan':('https://raw.githubusercontent.com/Trannosaur/published_dicts/master/zhm2vi.tsv','CC BY-SA 4.0 — Trannosaur / PanLex 2017','https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt'),
+           'pin':('https://raw.githubusercontent.com/ph0ngp/hanviet-pinyin-wordlist/main/hanviet.csv','MIT — Phong Phan','https://raw.githubusercontent.com/ph0ngp/hanviet-pinyin-wordlist/main/LICENSE'),
+          }
+          GENRES=['tienhiep','hiendai','khoahuyen','huyenhuyen','vongdu','mathe','lichsu','linhdi','caovo','quansu','dongnhan','vohanlu']
+          PRIVATE={'qt-personal-han.txt':'han','qt-personal-pron.txt':'pron','qt-personal-name.txt':'name','qt-personal-numeric.txt':'numeric','qt-personal-genre.txt':'genre-tienhiep','qt-personal-vp.txt':'vp','qt-personal-name2.txt':'name2','qt-personal-rules.txt':'rules',**{f'qt-genre-{g}.txt':'genre-'+g for g in GENRES if g!='tienhiep'}}
+          CURATED={'qt-public-ignore.txt':'ignore','qt-extra-vp.txt':'extra','qt-public-pron.txt':'pron','qt-public-name.txt':'name','qt-public-vp.txt':'vp','qt-public-name2.txt':'name2','qt-public-han.txt':'han','qt-public-numeric.txt':'numeric','qt-public-rules.txt':'rules',**{f'qt-genre-{g}.txt':'genre-'+g for g in GENRES}}
+          def download(url,limit=LIMIT):
+              req=urllib.request.Request(url,headers={'User-Agent':'PandaDictionaryBuilder/1.0','Accept-Encoding':'identity'})
+              with urllib.request.urlopen(req,timeout=60) as r:
+                  if not r.url.startswith('https://'):raise ValueError('HTTPS required')
+                  data=r.read(limit+1)
+              if not data or len(data)>limit:raise ValueError('Invalid download size '+url)
+              return data
+          def read_entry(z,n,limit=LIMIT):
+              x=z.getinfo(n)
+              if x.file_size>limit or x.is_dir():raise ValueError('Invalid entry '+n)
+              with z.open(x) as f: b=f.read(limit+1)
+              if len(b)>limit or len(b)!=x.file_size:raise ValueError('Invalid ZIP size')
+              return b
+          def normalize_pinyin(raw):
+              # Upstream stores hanviet as a serialized list, not a scalar.
+              rows=csv.DictReader(io.StringIO(raw.decode('utf-8-sig',errors='strict'),newline=''))
+              if rows.fieldnames!=['char','hanviet','pinyin']:raise ValueError('Unexpected Pinyin CSV header')
+              output=[];seen=set();chars=set();rejected=0
+              for row in rows:
+                  k=unicodedata.normalize('NFC',row.get('char') or '').strip()
+                  cell=row.get('hanviet') or ''; py=(row.get('pinyin') or '').strip()
+                  if len(k)!=1 or not ('CJK' in unicodedata.name(k,'') or k=='〇') or not py or ',' in py or len(cell)>4096:
+                      rejected+=1;continue
+                  try:
+                      # Upstream uses Python-style lists with single quotes.
+                      vals=json.loads(cell.replace("'",'"')) if cell.startswith('[') else [cell]
+                  except (ValueError,TypeError,RecursionError):
+                      rejected+=1;continue
+                  if not isinstance(vals,list):rejected+=1;continue
+                  for v in vals:
+                      if not isinstance(v,str):continue
+                      v=unicodedata.normalize('NFC',v).strip()
+                      if not v or not all(c in '- ' or unicodedata.category(c)[0] in 'LM' for c in v):continue
+                      triple=(k,v,py)
+                      if triple not in seen:seen.add(triple);output.append(','.join(triple));chars.add(k)
+              if len(chars)<1000:raise ValueError(f'Pinyin only {len(chars)} valid characters')
+              print(f'Pinyin: {len(chars)} unique characters, {len(output)} readings, {rejected} skipped rows')
+              return ('\n'.join(output)+'\n').encode('utf-8')
+          def make_pack(root,ident,raw,license,source):
+              txt=raw.decode('utf-8-sig',errors='strict')
+              if '\x00' in txt or '\ufffd' in txt or not txt.strip():raise ValueError('Invalid text '+ident)
+              # Source format and coarse minima; APK performs exact parser validation.
+              lines=[l for l in txt.splitlines() if l.strip() and not l.startswith('#')]
+              valid=sum(('[' in l and '/' in l) if ident=='cv' else ('\tkVietnamese\t' in l) if ident=='uni' else ('\t' in l) if ident in ('cc','pan') else (l.count(',')>=2) if ident=='pin' else ('=' in l and l.split('=',1)[0].strip()!='') for l in lines)
+              min_count={'cv':90000,'uni':5000,'cc':1000,'pan':1000,'pin':1000}.get(ident,1)
+              if valid<min_count:raise ValueError(f'{ident}: only {valid} candidate rows')
+              raw=txt.encode('utf-8')
+              if len(raw)>LIMIT:raise ValueError('Raw too large')
+              data=io.BytesIO()
+              with zipfile.ZipFile(data,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+                  info=zipfile.ZipInfo('data.txt',(2026,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,raw)
+              b=data.getvalue();sha=hashlib.sha256(b).hexdigest();name=sha+'.zip'
+              if len(b)>LIMIT:raise ValueError('Pack too large')
+              (root/'packs').mkdir(exist_ok=True);(root/'packs'/name).write_bytes(b)
+              return {'id':ident,'version':sha[:16],'sha256':sha,'file':name,'bytes':len(b),'rawBytes':len(raw),'sourceLines':valid,'license':license,'source':source}
+          def build(root,scope,fixture=False):
+              root=Path(root);root.mkdir(parents=True,exist_ok=True);manifest=[];notices=[]
+              if scope not in ('public','private'):raise ValueError('Unknown scope')
+              seed=root/('Panda_Dictionary_Public_Seed.zip' if scope=='public' else 'Panda_Dictionary_Private_Seed.zip')
+              with zipfile.ZipFile(seed) as z:
+                  names=z.namelist();allowed=CURATED if scope=='public' else PRIVATE
+                  if len(names)>64 or len(set(names))!=len(names) or any(n not in allowed and n!='NOTICE.txt' for n in names):raise ValueError('Unexpected seed member; do not put personal files in public seed')
+                  if sum(x.file_size for x in z.infolist())>160*1024*1024:raise ValueError('Seed expansion limit')
+                  for n,ident in allowed.items():
+                      if n in names and (ident!='ignore' or os.environ.get('PANDA_INCLUDE_IGNORE','false').lower()=='true'):
+                          manifest.append(make_pack(root,ident,read_entry(z,n),'Tiên Thiên Thư Viện — bộ thuật ngữ mẫu' if scope=='public' else 'Cá nhân — chưa xác minh quyền phân phối',n));notices.append(n)
+              if scope=='public' and not fixture:
+                  (root/'licenses').mkdir(exist_ok=True)
+                  for ident,(url,lic,licurl) in PUBLIC.items():
+                      data=download(url)
+                      if ident=='uni':
+                          with zipfile.ZipFile(io.BytesIO(data)) as z:data=read_entry(z,'Unihan_Readings.txt')
+                      if ident=='pin':data=normalize_pinyin(data)
+                      license_data=download(licurl,512*1024)
+                      (root/'licenses'/f'{ident}.txt').write_bytes(license_data)
+                      manifest.append(make_pack(root,ident,data,lic,url));notices.append(f'{ident}: {lic}\n{url}\n{licurl}')
+              if not manifest:raise ValueError('Empty catalog')
+              with zipfile.ZipFile(seed) as z:
+                  if 'NOTICE.txt' in z.namelist():notices.insert(0,read_entry(z,'NOTICE.txt',512*1024).decode('utf-8-sig'))
+              (root/'NOTICE.md').write_text('# Panda Dictionary — '+scope+'\n\n'+'\n\n'.join(notices)+'\n',encoding='utf-8')
+              (root/'manifest.json').write_text(json.dumps({'schema':1,'packs':manifest},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+              return manifest
+          if __name__=='__main__':
+              build(Path('.'),sys.argv[1])
+          PYCODE
+      - name: Commit data and manifest together
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add manifest.json packs NOTICE.md
+          if [ -d licenses ]; then git add licenses; fi
+          if git diff --cached --quiet; then echo 'No dictionary changes'; exit 0; fi
+          git commit -m 'Update dictionary catalog'
+          git push origin HEAD:main
