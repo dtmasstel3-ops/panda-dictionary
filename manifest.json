@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "packs": [
+    {
+      "id": "extra",
+      "version": "68ab1bf883c6fa42",
+      "sha256": "68ab1bf883c6fa420bfa3ea1f4aa7e3829af494636b590ed3df538221714d7af",
+      "file": "68ab1bf883c6fa420bfa3ea1f4aa7e3829af494636b590ed3df538221714d7af.zip",
+      "bytes": 1758,
+      "rawBytes": 3471,
+      "sourceLines": 178,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-extra-vp.txt"
+    },
+    {
+      "id": "genre-tienhiep",
+      "version": "8f3689001f59081b",
+      "sha256": "8f3689001f59081b33de9ef8be59d268c5888960aec582173f6ee9fed33d0f4f",
+      "file": "8f3689001f59081b33de9ef8be59d268c5888960aec582173f6ee9fed33d0f4f.zip",
+      "bytes": 540,
+      "rawBytes": 738,
+      "sourceLines": 41,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-tienhiep.txt"
+    },
+    {
+      "id": "genre-hiendai",
+      "version": "42d857764ac6a861",
+      "sha256": "42d857764ac6a86193f74d9270e6c9130185d3fce24432db9e85bcedb8298a1f",
+      "file": "42d857764ac6a86193f74d9270e6c9130185d3fce24432db9e85bcedb8298a1f.zip",
+      "bytes": 470,
+      "rawBytes": 638,
+      "sourceLines": 28,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-hiendai.txt"
+    },
+    {
+      "id": "genre-khoahuyen",
+      "version": "f6145084836fe111",
+      "sha256": "f6145084836fe111a5203bd5463cefe259de3c91223617e38a61c6ec98b924a2",
+      "file": "f6145084836fe111a5203bd5463cefe259de3c91223617e38a61c6ec98b924a2.zip",
+      "bytes": 456,
+      "rawBytes": 534,
+      "sourceLines": 26,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-khoahuyen.txt"
+    },
+    {
+      "id": "genre-huyenhuyen",
+      "version": "590bd8518345f3f4",
+      "sha256": "590bd8518345f3f483cf9cb854867af8e419ff3cc6ca86259f68183f77465e58",
+      "file": "590bd8518345f3f483cf9cb854867af8e419ff3cc6ca86259f68183f77465e58.zip",
+      "bytes": 436,
+      "rawBytes": 404,
+      "sourceLines": 16,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-huyenhuyen.txt"
+    },
+    {
+      "id": "genre-vongdu",
+      "version": "916eea4a6562609c",
+      "sha256": "916eea4a6562609c2d19c41de4647da536bec9b873098565cd913f2f5ee58b22",
+      "file": "916eea4a6562609c2d19c41de4647da536bec9b873098565cd913f2f5ee58b22.zip",
+      "bytes": 460,
+      "rawBytes": 426,
+      "sourceLines": 16,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-vongdu.txt"
+    },
+    {
+      "id": "genre-mathe",
+      "version": "a647dd82208f1272",
+      "sha256": "a647dd82208f1272084cdf113aa8908812a4705e597f88837b8958993d2c2951",
+      "file": "a647dd82208f1272084cdf113aa8908812a4705e597f88837b8958993d2c2951.zip",
+      "bytes": 465,
+      "rawBytes": 429,
+      "sourceLines": 16,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-mathe.txt"
+    },
+    {
+      "id": "genre-lichsu",
+      "version": "9f0dfcd8f1d50d68",
+      "sha256": "9f0dfcd8f1d50d683607575d7c301dbaf76b1deaa60769992cb5a29306d3902a",
+      "file": "9f0dfcd8f1d50d683607575d7c301dbaf76b1deaa60769992cb5a29306d3902a.zip",
+      "bytes": 431,
+      "rawBytes": 388,
+      "sourceLines": 16,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-lichsu.txt"
+    },
+    {
+      "id": "genre-linhdi",
+      "version": "8e325adf388bf1e3",
+      "sha256": "8e325adf388bf1e31f598a35a36ad12033413450696c6d806fc0aa5fcc6c996c",
+      "file": "8e325adf388bf1e31f598a35a36ad12033413450696c6d806fc0aa5fcc6c996c.zip",
+      "bytes": 431,
+      "rawBytes": 378,
+      "sourceLines": 16,
+      "license": "Tiên Thiên Thư Viện — bộ thuật ngữ mẫu",
+      "source": "qt-genre-linhdi.txt"
+    },
+    {
+      "id": "cv",
+      "version": "4935327075eaa9d0",
+      "sha256": "4935327075eaa9d01478a8797cb2de843fc77dd1e509c7d71eb095a055a10a53",
+      "file": "4935327075eaa9d01478a8797cb2de843fc77dd1e509c7d71eb095a055a10a53.zip",
+      "bytes": 3918317,
+      "rawBytes": 10803314,
+      "sourceLines": 122597,
+      "license": "CC BY-SA 4.0 — Phong Phan / CC-CEDICT",
+      "source": "https://raw.githubusercontent.com/ph0ngp/CVDICT/main/CVDICT.u8"
+    },
+    {
+      "id": "uni",
+      "version": "9c9a9bc7a865eccc",
+      "sha256": "9c9a9bc7a865eccc8d176183f47962bf8e1ec3e629cbd561f1a2c31af2d2d9de",
+      "file": "9c9a9bc7a865eccc8d176183f47962bf8e1ec3e629cbd561f1a2c31af2d2d9de.zip",
+      "bytes": 2558750,
+      "rawBytes": 8843048,
+      "sourceLines": 8306,
+      "license": "Unicode License — Unicode Consortium 17.0",
+      "source": "https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip"
+    },
+    {
+      "id": "cc",
+      "version": "418cc544d082ae4c",
+      "sha256": "418cc544d082ae4cec18209ffc0e34f613730b28234a04d9d5259f861a9e45a0",
+      "file": "418cc544d082ae4cec18209ffc0e34f613730b28234a04d9d5259f861a9e45a0.zip",
+      "bytes": 31165,
+      "rawBytes": 104520,
+      "sourceLines": 4148,
+      "license": "Apache-2.0 — BYVoid/OpenCC contributors",
+      "source": "https://raw.githubusercontent.com/BYVoid/OpenCC/master/data/dictionary/TSCharacters.txt"
+    },
+    {
+      "id": "pan",
+      "version": "bf9f06b427894a6e",
+      "sha256": "bf9f06b427894a6e1f755153b989b61c6ede8732f9e8d6c1ff420e9495ad8a32",
+      "file": "bf9f06b427894a6e1f755153b989b61c6ede8732f9e8d6c1ff420e9495ad8a32.zip",
+      "bytes": 503807,
+      "rawBytes": 1148961,
+      "sourceLines": 53872,
+      "license": "CC BY-SA 4.0 — Trannosaur / PanLex 2017",
+      "source": "https://raw.githubusercontent.com/Trannosaur/published_dicts/master/zhm2vi.tsv"
+    },
+    {
+      "id": "pin",
+      "version": "b14c089fa6f82ddc",
+      "sha256": "b14c089fa6f82ddcf86c8f827f28cd13930bbe67cefb36c17916d72b46dfc61b",
+      "file": "b14c089fa6f82ddcf86c8f827f28cd13930bbe67cefb36c17916d72b46dfc61b.zip",
+      "bytes": 70129,
+      "rawBytes": 195371,
+      "sourceLines": 11214,
+      "license": "MIT — Phong Phan",
+      "source": "https://raw.githubusercontent.com/ph0ngp/hanviet-pinyin-wordlist/main/hanviet.csv"
+    }
+  ]
+}
